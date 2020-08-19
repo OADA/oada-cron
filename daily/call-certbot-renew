@@ -1,0 +1,8 @@
+#!/bin/sh
+
+$(date) >> /code/oada-cron/logs/certbot.log.log
+echo -e "Attempting to renew certs...\n" >> /code/oada-cron/logs/certbot.log.log
+oada run --rm admin "certbot renew"
+echo -e "Done. Now restarting proxy...\n" >> /code/oada-cron/logs/certbot.log.log
+oada restart proxy
+echo -e "Done restarting proxy. Waiting...\n" >> /code/oada-cron/logs/certbot.log.log
