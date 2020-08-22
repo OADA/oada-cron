@@ -1,8 +1,18 @@
 #!/bin/sh
 
-$(date) >> /code/oada-cron/logs/certbot.log.log
-echo -e "Attempting to renew certs...\n" >> /code/oada-cron/logs/certbot.log.log
-oada run --rm admin "certbot renew"
-echo -e "Done. Now restarting proxy...\n" >> /code/oada-cron/logs/certbot.log.log
-oada restart proxy
-echo -e "Done restarting proxy. Waiting...\n" >> /code/oada-cron/logs/certbot.log.log
+LOGFOLDER=/code/oada-cron/logs
+LOG=${LOGFOLDER}/certbot.log
+
+[ ! -e $LOGFOLDER ] && mkdir -p $LOGFOLDER
+
+echo >> $LOG
+echo "-------------------------------------" >> $LOG
+date >> $LOG
+
+echo "Attempting to renew certs..." >> $LOG
+oada run --rm admin "certbot renew" >> $LOG 2>&1
+
+echo "Done. Now restarting proxy..." >> $LOG
+sleep 5 && oada restart proxy >> $LOG 2>&1
+
+echo  "Done restarting proxy" >> $LOG

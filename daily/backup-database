@@ -6,13 +6,16 @@ YEAR=$(date '+%Y')
 MONTH=$(date '+%m')
 DAY=$(date '+%d')
 
-BACKUP_FOLDER=/oada-backups
+BACKUP_FOLDER=/oada-cron/backups
 
 BACKUP_TMPFOLDER=bk_$YEAR-$MONTH-$DAY
 BACKUPFILE=${BACKUP_TMPFOLDER}.tar.bz2
 
 ###################################
 # Create folder for year if not there
+
+[ ! -e $BACKUP_FOLDER ] && mkdir -p $BACKUP_FOLDER
+
 cd $BACKUP_FOLDER
 if [ ! -e $YEAR ]; then
   echo "$YEAR does not exist, creating..."
